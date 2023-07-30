@@ -1,23 +1,24 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.0;
 
-contract NumberAdder {
-    function addNumbers(uint256 a, uint256 b) external pure returns (uint256) {
-        // Require statement: Verifies if the inputs meet certain conditions
-        require(a > 0, "Input 'a' must be greater than zero");
-        require(b > 0, "Input 'b' must be greater than zero");
-        
-        // Addition operation
-        uint256 result = a + b;
-        
-        // Assert statement: Verifies a condition that must always be true, otherwise throws an error
-        assert(result >= a && result >= b);
-        
-        // Revert statement: Rolls back the transaction and reverts any changes made
-        if (result < a || result < b) {
-            revert("Addition overflow occurred");
-        }
-        
-        return result;
+contract ErrorHandlersDemo {
+    uint256 public value;
+
+    event ValueSet(uint256 newValue);
+
+    function setValue(uint256 newValue) public {
+        // Using require() to check conditions and handle errors
+        require(newValue > 0, "Value must be greater than 0");
+
+        // Using assert() to check for internal errors
+        assert(newValue <= 100);
+
+        value = newValue;
+        emit ValueSet(newValue);
+    }
+
+    function triggerRevert() public pure {
+        // Using revert() to explicitly revert a transaction with an error message
+        revert("This transaction intentionally reverted");
     }
 }
